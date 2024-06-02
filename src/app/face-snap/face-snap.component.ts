@@ -1,17 +1,22 @@
 import { Component } from '@angular/core';
 import { Input } from '@angular/core';
-import { FaceSnap } from '../model/face-snap';
+import { FaceSnap } from '../models/face-snap';
 import { NgStyle } from '@angular/common';
 import { NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { FaceSnapsService } from '../services/face-snaps.service';
 @Component({
   selector: 'app-face-snap',
   standalone: true,
   imports: [NgStyle,
-            NgClass],
+            NgClass,
+          DatePipe,  CommonModule],
   templateUrl: './face-snap.component.html',
   styleUrl: './face-snap.component.scss'
 })
 export class FaceSnapComponent {
+  constructor(private faceSnapsService: FaceSnapsService) {}
   snapped!: boolean;
   snapButtonText!: string;
   @Input() faceSnap!: FaceSnap;
@@ -19,27 +24,31 @@ export class FaceSnapComponent {
   {
     this.snapButtonText = "Oh Snap!"
     this.snapped = false
-    this.faceSnap.setlocation("")
   };
-  removeSnap()
-  {
-    this.faceSnap.removeSnap()
-    this.snapped = false;
-    this.snapButtonText = "Oh Snap!"
-  }
+
   onAddSnap() {
     if (this.snapped == false)
     {
-      this.faceSnap.addSnap()
-      this.snapButtonText = "Oops, un Snap!"
-      this.snapped = true
+      this.snap()
     }
     else
     {
-      this.removeSnap()
+      this.unSnap()
     }
 
   }
+  unSnap() {
+    this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'unsnap');
+    this.snapButtonText = 'Oh Snap!';
+    this.snapped = false;
+  }
+  
+  snap() {
+    this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'snap');
+    this.snapButtonText = 'Oops, unSnap!';
+    this.snapped = true;
+  }
+
 
 }
 
