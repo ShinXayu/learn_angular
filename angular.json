@@ -51,7 +51,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              {"glob": "**/*", "input": "/src/assets"}
             ],
             "styles": [
               "src/styles.scss"
@@ -109,7 +110,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/snapface/public"
               }
             ],
             "styles": [

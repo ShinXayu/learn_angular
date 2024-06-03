@@ -6,17 +6,19 @@ import { NgClass } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FaceSnapsService } from '../services/face-snaps.service';
+import { Router } from '@angular/router';
+import { UpperCasePipe } from '@angular/common';
 @Component({
   selector: 'app-face-snap',
   standalone: true,
   imports: [NgStyle,
             NgClass,
-          DatePipe,  CommonModule],
+          DatePipe,  CommonModule, UpperCasePipe],
   templateUrl: './face-snap.component.html',
   styleUrl: './face-snap.component.scss'
 })
 export class FaceSnapComponent {
-  constructor(private faceSnapsService: FaceSnapsService) {}
+  constructor(private faceSnapsService: FaceSnapsService, private router: Router) {}
   snapped!: boolean;
   snapButtonText!: string;
   @Input() faceSnap!: FaceSnap;
@@ -47,6 +49,11 @@ export class FaceSnapComponent {
     this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'snap');
     this.snapButtonText = 'Oops, unSnap!';
     this.snapped = true;
+  }
+
+  onViewFaceSnap()
+  {
+    this.router.navigateByUrl(`facesnaps/${this.faceSnap.id}`);
   }
 
 
